@@ -1,15 +1,34 @@
-import React from 'react';
+//importing React
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import SearchBar from './components/search_bar';
+import YTSearch from 'youtube-api-search';
 
-import App from './components/app';
-import reducers from './reducers';
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+//Hold Api Key
+const API_KEY='AIzaSyC7GCLoI7kXNnwVUnCWxUZ_g5MLHTOdVZY';
 
-ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
-    <App />
-  </Provider>
-  , document.querySelector('.container'));
+
+//create new component and should produce some HTML
+//Take this component's geenerated HTMl and put it on the page (*in the DOM*)
+
+class App extends Component {
+	constructor(props){
+		super(props);
+		this.state={ videos: [] };
+		
+	YTSearch({key: API_KEY, term: 'surfboards'}, (videos) => {
+		this.setState({videos});
+		//this.setState({videos: videos}); in ES6 .. when key and property have the same name..
+	})
+
+	}
+	render(){
+
+	return <div>
+		<SearchBar />
+	</div>
+
+	}
+}
+ReactDOM.render(<App />, document.querySelector('.container'));
